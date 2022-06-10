@@ -1,0 +1,8 @@
+---
+- hosts: raspberries
+  become: true
+  tasks:
+
+  - name: run systemd commands
+    ansible.builtin.shell: /usr/bin/systemctl daemon-reload
+      

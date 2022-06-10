@@ -1,0 +1,19 @@
+---
+- hosts: raspberries
+  become: true
+  tasks:
+
+  - name: install jupyterlab pip3 package
+    pip:
+      name: jupyterlab
+      state: present
+
+  - name: set up jupyterlab
+    shell: "jupyter serverextension enable --py jupyterlab --system"
+
+  - name: adjust the config file spawner line
+    lineinfile:
+      path: /root/jupyterhub_config.py
+      regexp: ^c.Spawner.default_url
+      line: "c.Spawner.default_url = '/user/:username/lab'"
+

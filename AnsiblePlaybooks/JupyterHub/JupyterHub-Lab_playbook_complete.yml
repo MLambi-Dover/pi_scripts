@@ -1,0 +1,79 @@
+---
+- hosts: raspberries
+  become: true
+  tasks:
+  - name: Run the equiv of apt-get update as a separate step
+    apt:
+      update_cache: yes
+
+  - name: Install packages
+    apt: name={{ item }} state=present
+    with_items:
+      - git
+      - python3-scipy
+      - python3-matplotlib
+      - python3-pip
+      - npm
+      - libatlas-base-dev
+
+  - name: install proxy node package for Jupyter
+    npm:
+      name: configurable-http-proxy
+      state: present
+      global: yes
+
+
+  - name: update pip
+    pip:
+      name: pip
+      extra_args: --upgrade
+
+
+  - name: Install Jupyter with pip3
+    pip: name={{ item }} state=present
+    with_items:
+      - notebook
+      - jupyterhub
+      - jupyterlab
+      - seaborn
+      - numpy
+
+  - name: run jupyterhub config command
+    shell: "jupyterhub --generate-config"
+    args:
+      creates: "./jupyterhub_config.py"
+
+  - name: copy file to root
+    shell: "cp jupyterhub_config.py/root"
+    args:
+      creates: "/root/jupyterhub_config.py"
+
+  - name: change the JupyterHub port
+    lineinfile:
+      path: /root/jupyterhub_config.py
+      regexp: ^c.JupyterHub.bind_url
+      line: "c.JupyterHub.bind_url = 'http://:8888'"
+        
+  - name: copy file for systemd startup
+    ansible.builtin.copy:
+      src: ./files/jupyterhub.service
+      dest: /etc/systemd/system
+
+  - name: Set up Jupyterlab
+    shell: "jupyter serverextension enable --py jupyterlab --system"
+
+  - name: adjust the config file spawner line
+    lineinfile:
+      path: /root/jupyterhub_config.py
+      regexp: ^c.Spawner.default_url
+      line: "c.Spawner.default_url = '/user/:username/lab'"
+
+  - name: Modify 99-com.rules to allow access to i2c
+    lineinfile:
+      path: /etc/udev/rules.d/99-com.rules
+      regexp: ^ SUBSYSTEM=="i2c-dev"
+      line: 'SUBSYSTEM=="i2c-dev", GROUP="i2c", MODE="0666"'
+
+  - name: systemctl to set up the service
+    shell: systemctl daemon-reload && systemctl start jupyterhub.service && sudo enable jupyterhub.service
+

@@ -1,0 +1,7 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+  - name: check the uptime
+    copy: src=test.txt dest=/root/remote.txt

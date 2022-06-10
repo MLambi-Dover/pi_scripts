@@ -1,0 +1,9 @@
+---
+- hosts: raspberries
+  become: true
+  tasks:
+
+  - name: copy jupyterhub.service file
+    ansible.builtin.copy:
+      src: /home/mlambi/Desktop/Ansible/playbooks/Jupyter/jupyterhub.service
+      dest: /etc/systemd/system

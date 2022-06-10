@@ -1,0 +1,8 @@
+---
+- hosts: raspberries
+  become: true
+  tasks:
+  - name: download a file from git (IamAlive.py)
+    get_url:
+      url: "https://raw.githubusercontent.com/MLambi-Dover/pi_scripts/main/IamAlive.py"
+      dest: "/home/pi/IamAlive.py"

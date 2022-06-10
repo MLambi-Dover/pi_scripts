@@ -1,0 +1,10 @@
+---
+- hosts: raspberries
+  become: true
+  tasks:
+
+  - name: run the jupyterhub config commans
+    shell: "jupyterhub --generate-config"
+    args:
+      creates: "./jupyterhub_config.py"
+

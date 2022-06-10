@@ -1,0 +1,28 @@
+---
+- hosts: raspberries
+  become: true
+  tasks:
+
+  - name: run jupyterhub config command
+    shell: "jupyterhub --generate-config"
+    args:
+      creates: "./jupyterhub_config.py"
+
+  - name: copy file to /root
+    shell: "cp jupyterhub_config.py /root"
+    args:
+      creates: "/root/jupyterhub_config"
+
+  - name: change the JupyterHub port
+    lineinfile:
+      path: /root/jupyterhub_config.py
+      regexp: ^c.JupyterHub.bind_url
+      line: "c.JupyterHub.bind_url = 'http://:8888'"
+
+  - name: copy file for systemd startup
+    ansible.builtin.copy:
+      src: /home/mlambi/Desktop/Ansible/playbooks/Jupyter/jupyterhub.service
+      dest: /etc/systemd/system/
+
+  - name: systemctl to set up the service
+    shell: systemctl daemon-reload && systemctl start jupyterhub && sudo enable jupyterhub

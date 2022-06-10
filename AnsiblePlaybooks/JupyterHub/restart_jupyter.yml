@@ -1,0 +1,7 @@
+---
+- hosts: raspberries
+  become: true
+  tasks:
+
+  - name: restart jupyterhub
+    ansible.builtin.shell: /usr/bin/systemctl restart jupyterhub.service

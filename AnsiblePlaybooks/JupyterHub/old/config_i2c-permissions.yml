@@ -1,0 +1,10 @@
+---
+- hosts: all
+  become: true
+  tasks:
+
+  - name: Modify 99-com.rules
+    lineinfile:
+      path: /etc/udev/rules.d/99-com.rules
+      regexp: ^SUBSYSTEM=="i2c-dev"
+      line: 'SUBSYSTEM=="i2c-dev", GROUP="i2c", MODE="0666"'

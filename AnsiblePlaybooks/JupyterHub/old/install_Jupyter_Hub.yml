@@ -1,0 +1,40 @@
+---
+- hosts: raspberries
+  become: true
+  tasks:
+  - name: Run the equiv of apt-get update as a separate step
+    apt:
+      update_cache: yes
+
+  - name: Install packages
+    apt: name={{ item }} state=present
+    with_items:
+      - git
+      - python3-scipy
+      - python3-matplotlib
+      - python3-pip
+      - npm
+      - libatlas-bas-dev
+
+  - name: install proxy node package for Jupyter
+    npm:
+      name: configurable-http-proxy
+      state: present
+      global: yes
+
+
+  - name: update pip
+    pip:
+      name: pip
+      extra_args: --upgrade
+
+
+  - name: Install Jupyter with pip3
+    pip: name={{ item }} state=present
+    with_items:
+      - notebook
+      - jupyterhub
+      - jupyterlab
+      - seaborn
+      - numpy
+

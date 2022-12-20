@@ -17,12 +17,12 @@ from time import strftime
 # These variables are for the size of the canvas and the title of the window
 
 title = "Yup"
-width = 400
-height = 400
+width = 400  # This could have been for the window
+height = 400 # but it is for the canvas
 
 window = tk.Tk()
 window.title(title)
-window.iconbitmap('e:/images/icons/saucer.ico') # if you don't have this comment the line out
+# window.iconbitmap('e:/images/icons/saucer.ico') # if you don't have this comment the line out
 
 # exit buttons are always convenient. I like them on the bottom, but this is easier
 exitButton = tk.Button(window, text='Exit', command=window.quit, padx=25)

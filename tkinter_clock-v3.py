@@ -19,6 +19,12 @@ from time import strftime
 title = "Yup"
 width = 800
 height = 800
+# colors
+red = 'red'
+lightRed = 'beige'
+grey = 'grey'
+secondsYellow = 'yellow'
+green = 'green'
 
 window = tk.Tk()
 window.title(title)
@@ -52,7 +58,7 @@ sizeYtall = sizeX  # all of the rows should be the same height, for now
 # draw the circle
 def drawCircle(seconds):
     if int(seconds) %2 == 0: # on/off for even/odd seconds
-        color = 'yellow'
+        color = secondsYellow
     else:
         color = 'grey99'
     circleMiddle = (width/2) # centers the circle at half the width
@@ -109,13 +115,13 @@ def makeRowX11(minutesString):
     for i in range(11):
         # print(f'i is {i} and {(i+1)%3}')  # yep, that's right, more
         if (i+1)%3 == 0:
-            color = 'indian red'
+            color = lightRed
         else:
-            color = 'grey99'
+            color = grey
         if i + 1 <= int(minutesString) / 5:
-            color = 'green'
+            color = green
             if (i + 1) % 3 == 0:
-                color = 'red'
+                color = red
         # rint(f"cycle: {i} - x1={x1}, y1={y1}, x2={x2}, y2={y2}")  # and more, I even lost the 'p'
         myCanvas.create_rectangle(x1,y1,x2,y2, fill=color)
         x1 = x2 + spacerSizeTall
@@ -127,15 +133,15 @@ def goGoGo():
     minuteString = int(strftime('%M'))   # can be
     secondsString = int(strftime('%S'))  # done better
     # print(f'hoursString: {hoursString}, minutesString: {minuteString}, secondsString: {secondsString}')
-    drawCircle(secondsString)           # This block of code
-    makeRowX4('hoursX5', hoursString)   # calls the functions
-    makeRowX4('hoursX1', hoursString)   # for the hours and minutes
-    makeRowX11(minuteString)            #
-    makeRowX4('minX1', minuteString)    # the next part is the magic
+    drawCircle(secondsString)            # This block of code
+    makeRowX4('hoursX5', hoursString)    # calls the functions
+    makeRowX4('hoursX1', hoursString)    # for the hours and minutes
+    makeRowX11(minuteString)             #
+    makeRowX4('minX1', minuteString)     # the next part is the magic
     myCanvas.after(1000, goGoGo)         # the .after replaces sleep and does not block the mainloop
 
 # blocking the mainloop would be bad. our buttons and other things would not work
-# performance doesn ot
+# performance does not
 
 goGoGo()
 window.mainloop()

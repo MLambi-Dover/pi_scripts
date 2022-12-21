@@ -17,8 +17,8 @@ from time import strftime
 # These variables are for the size of the canvas and the title of the window
 
 title = "Yup"
-width = 400
-height = 400
+width = 800
+height = 800
 
 window = tk.Tk()
 window.title(title)
@@ -44,7 +44,7 @@ spacerSize = (.1 * width) / 3  # this is the space between rectangles for 3 of t
 spacerSizeTall = (.2 * width) / 10  # this is the spacer for the 11x 5-Minute columns
 sizeX = (.8*width)/4  # this sets the width of the rectangles for Hx5, H, and M
 sizeXtall = (.7*width)/11  # sets the width of the 5x-Minute row
-sizeY = 25  # all of the rows should be the same height, for now
+sizeY = width/16  # all of the rows should be the same height, for now
 sizeYtall = sizeX  # all of the rows should be the same height, for now
 
 # print(f"rowWidth: {rowWidth}, paddingLeft: {paddingLeft}, spacerSize: {spacerSize}, sizeX: {sizeX}")
@@ -54,19 +54,19 @@ def drawCircle(seconds):
     if int(seconds) %2 == 0: # on/off for even/odd seconds
         color = 'yellow'
     else:
-        color = 'grey'
+        color = 'grey99'
     circleMiddle = (width/2) # centers the circle at half the width
     x1 = circleMiddle-(circleSize/2)
     x2 = circleMiddle+(circleSize/2)
     # print(f'circleMiddle: {circleMiddle}, x1: {x1}')  # lots of print statements left behind from debugging
     # the size of the circle is 50, created statically below, that should probably be defined in above
-    myCanvas.create_oval(x1, topOfCircle, x2, topOfCircle+50, fill=color)
+    myCanvas.create_oval(x1, topOfCircle, x2, topOfCircle+(width/8), fill=color)
 
 # this functions draws the rows for the 5x-Hour, Hour and Minute rows
 # the rowName designates which. time is called in the original loop and passed here
 # each time this function is called
 def makeRowX4(rowName, timeString): # make a row of four rectangles; can be used for Hx5, Hx1 and Mx1
-    color = 'grey'
+    color = 'grey99'
     startingY = topOfCircle + circleSize + spacerSize
     if rowName == 'hoursX1':
         startingY = startingY + spacerSize + sizeY
@@ -82,17 +82,17 @@ def makeRowX4(rowName, timeString): # make a row of four rectangles; can be used
             if i + 1 <= int(timeString) % 5:  # bottom row or 1 minute rectangles
                 color = 'green'
             else:
-                color = 'grey'
+                color = 'grey99'
         elif rowName == 'hoursX1':
             if i + 1 <= int(timeString) % 5:  # like the minute row, below the top row
                 color = 'green'
             else:
-                color = 'grey'
+                color = 'grey99'
         elif rowName == 'hoursX5':
             if i + 1 <= int(timeString) / 5:  # the top row, 5 hour blocks (the math is different)
                 color = 'green'
             else:
-                color = 'grey'
+                color = 'grey99'
         # print(f"cycle: {i} - x1={x1}, y1={y1}, x2={x2}, y2={y2}")  # more amateur debugging
         myCanvas.create_rectangle(x1,y1,x2,y2, fill=color)
         x1 = x2 + spacerSize  # increment x
@@ -111,7 +111,7 @@ def makeRowX11(minutesString):
         if (i+1)%3 == 0:
             color = 'indian red'
         else:
-            color = 'grey'
+            color = 'grey99'
         if i + 1 <= int(minutesString) / 5:
             color = 'green'
             if (i + 1) % 3 == 0:

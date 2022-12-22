@@ -12,12 +12,11 @@
 
 import tkinter as tk
 from tkinter import ttk
-
 from time import strftime, sleep
 
 window = tk.Tk()
 window.title("clock")
-window.iconbitmap('e:/images/icons/saucer.ico')
+# window.iconbitmap('e:/images/icons/saucer.ico')
 #window.geometry("405x170")
 
 frameTop = tk.Frame(window, relief='sunken', borderwidth=6)

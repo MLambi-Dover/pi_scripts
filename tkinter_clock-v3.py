@@ -17,25 +17,36 @@ from time import strftime
 # These variables are for the size of the canvas and the title of the window
 
 title = "Yup"
-width = 800
-height = 800
+width = 400
+height = 400
 # colors
-red = 'red'
-lightRed = 'beige'
-grey = 'grey'
-secondsYellow = 'yellow'
-green = 'green'
+color1 = 'red'     # seconds circle
+color1b = 'green'
+color2 = 'green'      # the hour and minute rectangles, filled
+color3 = 'red'        # 15-minute marks, active
+color4 = 'beige'      # 15-minute marks, inactive
+color5 = 'grey'       # rectangles, inactive
+color6 = 'pale green'     # 
+
 
 window = tk.Tk()
 window.title(title)
-window.iconbitmap('e:/images/icons/saucer.ico') # if you don't have this comment the line out
+# window.iconbitmap('e:/images/icons/saucer.ico') # if you don't have this comment the line out
+
+frameTop = tk.Frame(window).pack()
+frameBottom = tk.Frame(window).pack()
 
 # exit buttons are always convenient. I like them on the bottom, but this is easier
-exitButton = tk.Button(window, text='Exit', command=window.quit, padx=25)
+exitButton = tk.Button(frameTop, text='Exit', command=window.quit, padx=25)
 exitButton.pack() # don't forget, packing is order dependent; this will be on top
 
-myCanvas = tk.Canvas(window, width=width, height=height)
+
+
+myCanvas = tk.Canvas(frameBottom, width=width, height=height, bg=color6)
 myCanvas.pack()
+
+# imageFilename = tk.PhotoImage(file = "c:\\eyesore.gif")
+# myCanvas.create_image(20,20,anchor='ne', image=imageFilename)
 
 # cross hair; used these for early testing to make sure things were where I thought/wanted
 # myCanvas.create_line(0,200,400,200)
@@ -58,9 +69,9 @@ sizeYtall = sizeX  # all of the rows should be the same height, for now
 # draw the circle
 def drawCircle(seconds):
     if int(seconds) %2 == 0: # on/off for even/odd seconds
-        color = secondsYellow
+        color = color1
     else:
-        color = 'grey99'
+        color = color1b
     circleMiddle = (width/2) # centers the circle at half the width
     x1 = circleMiddle-(circleSize/2)
     x2 = circleMiddle+(circleSize/2)
@@ -86,19 +97,19 @@ def makeRowX4(rowName, timeString): # make a row of four rectangles; can be used
     for i in range(4):
         if rowName == 'minX1':
             if i + 1 <= int(timeString) % 5:  # bottom row or 1 minute rectangles
-                color = 'green'
+                color = color2
             else:
-                color = 'grey99'
+                color = color5
         elif rowName == 'hoursX1':
             if i + 1 <= int(timeString) % 5:  # like the minute row, below the top row
-                color = 'green'
+                color = color2
             else:
-                color = 'grey99'
+                color = color5
         elif rowName == 'hoursX5':
             if i + 1 <= int(timeString) / 5:  # the top row, 5 hour blocks (the math is different)
-                color = 'green'
+                color = color2
             else:
-                color = 'grey99'
+                color = color5
         # print(f"cycle: {i} - x1={x1}, y1={y1}, x2={x2}, y2={y2}")  # more amateur debugging
         myCanvas.create_rectangle(x1,y1,x2,y2, fill=color)
         x1 = x2 + spacerSize  # increment x
@@ -115,13 +126,13 @@ def makeRowX11(minutesString):
     for i in range(11):
         # print(f'i is {i} and {(i+1)%3}')  # yep, that's right, more
         if (i+1)%3 == 0:
-            color = lightRed
+            color = color4
         else:
-            color = grey
+            color = color5
         if i + 1 <= int(minutesString) / 5:
-            color = green
+            color = color2
             if (i + 1) % 3 == 0:
-                color = red
+                color = color3
         # rint(f"cycle: {i} - x1={x1}, y1={y1}, x2={x2}, y2={y2}")  # and more, I even lost the 'p'
         myCanvas.create_rectangle(x1,y1,x2,y2, fill=color)
         x1 = x2 + spacerSizeTall

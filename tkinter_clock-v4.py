@@ -6,6 +6,11 @@
 # 4x 1 hour each
 # 11x 5 minutes, arranged vertically
 # 4x 1 minute
+<<<<<<< Updated upstream
+=======
+# This version, v4 changes all of the colors to variables and
+# adds buttons to change the color theme
+>>>>>>> Stashed changes
 
 # This is a tkinter exercise, so that gets imported
 # We also need to be able to get a time string to tell the time
@@ -17,6 +22,7 @@ from time import strftime
 # These variables are for the size of the canvas and the title of the window
 
 title = "Yup"
+<<<<<<< Updated upstream
 width = 400
 height = 400
 # colors
@@ -48,6 +54,32 @@ myCanvas.pack()
 # imageFilename = tk.PhotoImage(file = "c:\\eyesore.gif")
 # myCanvas.create_image(20,20,anchor='ne', image=imageFilename)
 
+=======
+width = 800
+height = 800
+# colors
+red = 'red'
+lightRed = 'beige'
+grey = 'grey'
+secondsColor1 = 'red'
+secondsColor2 = 'green'
+green = 'green'
+minX1grey = 'grey99'
+hoursX1grey = 'grey99'
+hoursX5grey = 'grey99'
+
+window = tk.Tk()
+window.title(title)
+window.iconbitmap('e:/images/icons/saucer.ico') # if you don't have this comment the line out
+
+# exit buttons are always convenient. I like them on the bottom, but this is easier
+exitButton = tk.Button(window, text='Exit', command=window.quit, padx=25)
+exitButton.pack() # don't forget, packing is order dependent; this will be on top
+
+myCanvas = tk.Canvas(window, width=width, height=height)
+myCanvas.pack()
+
+>>>>>>> Stashed changes
 # cross hair; used these for early testing to make sure things were where I thought/wanted
 # myCanvas.create_line(0,200,400,200)
 # myCanvas.create_line(200,0,200,400)
@@ -69,9 +101,15 @@ sizeYtall = sizeX  # all of the rows should be the same height, for now
 # draw the circle
 def drawCircle(seconds):
     if int(seconds) %2 == 0: # on/off for even/odd seconds
+<<<<<<< Updated upstream
         color = color1
     else:
         color = color1b
+=======
+        color = secondsColor1
+    else:
+        color = secondsColor2
+>>>>>>> Stashed changes
     circleMiddle = (width/2) # centers the circle at half the width
     x1 = circleMiddle-(circleSize/2)
     x2 = circleMiddle+(circleSize/2)
@@ -96,6 +134,7 @@ def makeRowX4(rowName, timeString): # make a row of four rectangles; can be used
     y2 = y1 + sizeY
     for i in range(4):
         if rowName == 'minX1':
+<<<<<<< Updated upstream
             if i + 1 <= int(timeString) % 5:  # bottom row or 1 minute rectangles
                 color = color2
             else:
@@ -110,6 +149,22 @@ def makeRowX4(rowName, timeString): # make a row of four rectangles; can be used
                 color = color2
             else:
                 color = color5
+=======
+            if i + 1 <= int(timeString) % 5:  # bottom row, or 1 minute rectangles
+                color = green
+            else:
+                color = minX1grey
+        elif rowName == 'hoursX1':
+            if i + 1 <= int(timeString) % 5:  # like the minute row, _below_ the top row
+                color = green
+            else:
+                color = hoursX1grey
+        elif rowName == 'hoursX5':
+            if i + 1 <= int(timeString) / 5:  # the top row, 5 hour blocks (the math is different)
+                color = green
+            else:
+                color = hoursX5grey
+>>>>>>> Stashed changes
         # print(f"cycle: {i} - x1={x1}, y1={y1}, x2={x2}, y2={y2}")  # more amateur debugging
         myCanvas.create_rectangle(x1,y1,x2,y2, fill=color)
         x1 = x2 + spacerSize  # increment x
@@ -126,6 +181,7 @@ def makeRowX11(minutesString):
     for i in range(11):
         # print(f'i is {i} and {(i+1)%3}')  # yep, that's right, more
         if (i+1)%3 == 0:
+<<<<<<< Updated upstream
             color = color4
         else:
             color = color5
@@ -133,6 +189,15 @@ def makeRowX11(minutesString):
             color = color2
             if (i + 1) % 3 == 0:
                 color = color3
+=======
+            color = lightRed
+        else:
+            color = grey
+        if i + 1 <= int(minutesString) / 5:
+            color = green
+            if (i + 1) % 3 == 0:
+                color = red
+>>>>>>> Stashed changes
         # rint(f"cycle: {i} - x1={x1}, y1={y1}, x2={x2}, y2={y2}")  # and more, I even lost the 'p'
         myCanvas.create_rectangle(x1,y1,x2,y2, fill=color)
         x1 = x2 + spacerSizeTall

@@ -20,6 +20,7 @@ title = "Yup"
 width = 800
 height = 800
 # colors
+<<<<<<< Updated upstream
 # don't forget color[0]
 color1 = 'red'           # seconds circle active
 color2 = 'green'         # the hour and minute rectangles, active
@@ -52,6 +53,17 @@ def themeSetup(theme):
     myLabel.config(text = themeColors[theme])
     myCanvas.config(background=colorList[6])
 
+=======
+red = 'red'
+lightRed = 'beige'
+grey = 'grey'
+secondsColor1 = 'yellow'
+secondsColor2 = ''
+green = 'green'
+minX1grey = 'grey99'
+hoursX1grey = 'grey99'
+hoursX5grey = 'grey99'
+>>>>>>> Stashed changes
 
 window = tk.Tk()
 window.title(title)
@@ -116,7 +128,11 @@ sizeYtall = sizeX  # all of the rows should be the same height, for now
 # draw the circle
 def drawCircle(seconds):
     if int(seconds) %2 == 0: # on/off for even/odd seconds
+<<<<<<< Updated upstream
         color = colorList[1]
+=======
+        color = secondsColor
+>>>>>>> Stashed changes
     else:
         color = colorList[7]
     circleMiddle = (width/2) # centers the circle at half the width
@@ -144,6 +160,7 @@ def makeRowX4(rowName, timeString): # make a row of four rectangles; can be used
     y2 = y1 + sizeY
     for i in range(4):
         if rowName == 'minX1':
+<<<<<<< Updated upstream
             if i + 1 <= int(timeString) % 5:  # bottom row or 1 minute rectangles
                 color = colorList[2]
             else:
@@ -158,6 +175,22 @@ def makeRowX4(rowName, timeString): # make a row of four rectangles; can be used
                 color = colorList[2]
             else:
                 color = colorList[5]
+=======
+            if i + 1 <= int(timeString) % 5:  # bottom row, or 1 minute rectangles
+                color = green
+            else:
+                color = minX1grey
+        elif rowName == 'hoursX1':
+            if i + 1 <= int(timeString) % 5:  # like the minute row, _below_ the top row
+                color = green
+            else:
+                color = hoursX1grey
+        elif rowName == 'hoursX5':
+            if i + 1 <= int(timeString) / 5:  # the top row, 5 hour blocks (the math is different)
+                color = green
+            else:
+                color = hoursX5grey
+>>>>>>> Stashed changes
         # print(f"cycle: {i} - x1={x1}, y1={y1}, x2={x2}, y2={y2}")  # more amateur debugging
         # print(f'color is {color}, colorList is {colorList}')
         myCanvas.create_rectangle(x1,y1,x2,y2, fill=color)

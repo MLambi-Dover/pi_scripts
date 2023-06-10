@@ -24,8 +24,13 @@ window = tk.Tk()
 myCanvas = tk.Canvas(window, width=canvasWidth, height=canvasHeight)
 
 
-line1 = myCanvas.create_line(0,5, 250,5, width=5, fill='red')
-line2 = myCanvas.create_line(0,50, 250,50, width=5, fill='blue')
+# line1 = myCanvas.create_line(0,5, 250,5, width=5, fill='red')
+# line2 = myCanvas.create_line(0,50, 250,50, width=5, fill='blue')
+for i in range(1, 5):
+    'line' + i = myCanvas.create_line(0, i*5, 250, (i*5)+5, width=5, fill='black')
+
+ 
+
 myCanvas.pack()
 
 exitButton = tk.Button(window, text='exit', padx=15, pady=5, command=quit).pack(side='left')

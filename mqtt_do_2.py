@@ -15,11 +15,9 @@ import argparse
 import paho.mqtt.client as mqtt
 import json
 import logging
-from gpiozero import OutputDevice
+import os
 from socket import gethostname
 
-# The IR filter is on pin 5
-ir_filter = OutputDevice(5)
 
 DEFAULT_MQTT_BROKER_IP = "ansipi.local"
 DEFAULT_MQTT_BROKER_PORT = 1883
@@ -32,7 +30,7 @@ logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 
 def on_connect(client, userdata, flags, rc):
     logging.info("OnConnect:  Connected with result code {0}".format(str(rc)))
-    client.subscribe("IR_filter")
+    client.subscribe(DEFAULT_MQTT_TOPIC)
 
 
 def on_message(client, userdata, msg):
@@ -41,21 +39,24 @@ def on_message(client, userdata, msg):
     logging.debug("OnMessage:  The converted dictionary is : " + str(values))
     logging.debug("OnMessage:  The type is: " + str(type(values)))
     action = (values["action"])
-    ir_filter_control(action)
+    desktop_control(action)
 
-def ir_filter_control(action):
-    logging.debug("IR filter control: Action received = " + str(action))
-    if action == 'on':
-        ir_filter.on()
+def desktop_control(action):
+    logging.debug("Desktop control: Action received = " + str(action))
+    if action == 'soft':
+        # do something here
+        os.system("~/kill_switch_soft.sh")
     elif action == 'off':
-        ir_filter.off()
+        # do something here 
+        os.system("~/kill_switch.sh")
     elif action == 'toggle':
-        ir_filter.toggle()
+        # do something here
+        pass
     else:
         logging.warning("IR filter control: action out of bounds")
 
 parser = argparse.ArgumentParser(
-    description = "Receive commands for IR cut-filter."
+    description = "Receive commands for Desktop."
     )
 parser.add_argument(
     "--broker",
